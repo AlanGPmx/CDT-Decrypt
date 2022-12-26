@@ -18,7 +18,9 @@ const getPublicKey = (
 		getRequestAndResponseAPILLaves(textoUnaLinea, endpoint, texto.idAcceso);
 
 	const llavePublica = textAccessPrivate![0]
-		.match(/"accesoPublico": "[A-Za-z0-9+=\/\-\≤\.]+"/gm)![0]
+		.match(
+			/("|\\")accesoPublico("|\\"): ("|\\")[A-Za-z0-9+=\/\-\≤\.]+("|\\")/gm
+		)![0]
 		.split('"')[3];
 	return llavePublica;
 };
