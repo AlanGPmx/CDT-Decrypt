@@ -11,7 +11,7 @@ import {getPrivateKey} from './keys/getPrivateKey';
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand(
-		'cdt-decrypt.helloWorld',
+		'cdt-decrypt.CDT_Decrypt',
 		() => {
 			// The code you place here will be executed every time your command is executed
 			//Obtener la instancia del editor activo
