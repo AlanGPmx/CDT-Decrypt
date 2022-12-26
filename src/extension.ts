@@ -2,10 +2,10 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import {posix} from 'path';
-import {URI} from 'vscode-uri';
 import {Texto} from './interfaces/texto';
 import {desencriptarObjeto} from './utils/Desencriptar';
 import {getPrivateKey} from './keys/getPrivateKey';
+import * as path from 'path';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -19,9 +19,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 			//Si no hay un editor activo, mostrar un mensaje de error
 			if (!editor) {
-				return vscode.window.showInformationMessage(
-					'Error: No hay un editor activo'
-				);
+				vscode.window.showInformationMessage('Error: No hay un editor activo');
+				throw new Error(`Error: No hay un editor activo`);
 			}
 
 			// Obtener el texto del editor activo
@@ -59,6 +58,8 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	);
 
+	const removeFilePart = (dirname: any) => path.parse(dirname).dir;
+
 	const logica = async (idAcceso: string, texto: Texto, pathToSave: any) => {
 		if (idAcceso === '' || idAcceso === undefined) {
 			return vscode.window.showInformationMessage(
@@ -71,12 +72,11 @@ export function activate(context: vscode.ExtensionContext) {
 				'No se ha abierto ninguna carpeta o espacio de trabajo, el archivo se guardará en la misma carpeta donde se encuentra el LOG',
 				'Ok'
 			);
-			pathToSave = URI.file(pathToSave);
+
+			pathToSave = vscode.window.activeTextEditor?.document.uri;
 		} else {
 			pathToSave = vscode.workspace.workspaceFolders[0].uri;
 		}
-
-		console.log(pathToSave);
 
 		const textoCompletoUnaLinea = texto.completo.replace(/(\r\n|\n|\r)/gm, '');
 		let response = getPrivateKey(textoCompletoUnaLinea, texto, 1); // Response
@@ -124,17 +124,21 @@ DESENCRIPTAR RESPONSE (Llave Privada):
 			}`;
 
 		const writeData = Buffer.from(textoFinal, 'utf8');
-
 		const folderUri = pathToSave;
 		const fileUri = folderUri.with({
-			path: posix.join(folderUri.path, `logDecrypt_${idAcceso}.jsonc`),
+			path: posix.join(
+				removeFilePart(folderUri.path),
+				`logDecrypt_${idAcceso}.jsonc`
+			),
 		});
 		vscode.workspace.fs.writeFile(fileUri, writeData);
 
 		vscode.window.showInformationMessage(
-			`Fin de la tarea de desencriptado`,
-			'Ok'
+			`Archivo guardado en:\n${fileUri.path}`,
+			'Entendido'
 		);
+
+		vscode.window.showInformationMessage(`Fin de la tarea de desencriptado`);
 	};
 
 	context.subscriptions.push(disposable);
