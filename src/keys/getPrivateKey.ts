@@ -14,9 +14,15 @@ export const getPrivateKey = (
 	const textAccessPrivate: TextAccessPrivateTypes =
 		getRequestAndResponseAPILLaves(textoUnaLinea, endpoint, texto.idAcceso);
 
-	const llavePrivada = textAccessPrivate![0]
-		.match(/"accesoPrivado": "[A-Za-z0-9+=\/\-\≤\.]+"/gm)![0]
-		.split('"')[3];
+	if (textAccessPrivate === undefined || textAccessPrivate === null) {
+		console.log('No se encontró el texto de acceso privado');
+	}
+
+	let llavePrivada: TextAccessPrivateTypes = textAccessPrivate![0].match(
+		/("|\\")accesoPrivado("|\\")(\s?)+:(\s?)+("|\\")[\d\w+=/-≤.]+("|\\")/gm
+	);
+
+	llavePrivada = llavePrivada![0].split('"')[3];
 
 	texto.paraDesencriptar = texto.paraDesencriptar.split('\n').join('');
 
