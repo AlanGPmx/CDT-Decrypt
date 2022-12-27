@@ -2,9 +2,18 @@
 	"name": "cdt-decrypt",
 	"displayName": "CDT Decrypt",
 	"description": "Herramienta para desencriptar las peticiones y respuestas que se pintan en los LOGs del área para guardias",
+	"icon": "assets/CDT.jpg",
+	"publisher": "AlanGPmx",
 	"version": "0.0.1",
+	"author": {
+		"name": "Alan Garduño"
+	},
+	"galleryBanner": {
+		"color": "#088A4B",
+		"theme": "dark"
+	},
 	"engines": {
-		"vscode": "^1.74.0"
+		"vscode": "^1.64.0"
 	},
 	"categories": [
 		"Other"
@@ -36,7 +45,7 @@
 		"@types/glob": "^8.0.0",
 		"@types/mocha": "^10.0.1",
 		"@types/node": "16.x",
-		"@types/vscode": "^1.74.0",
+		"@types/vscode": "^1.64.0",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
 		"@typescript-eslint/parser": "^5.45.0",
 		"@vscode/test-electron": "^2.2.0",
