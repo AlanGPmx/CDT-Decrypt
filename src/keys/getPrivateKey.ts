@@ -19,21 +19,20 @@ export const getPrivateKey = (
 	}
 
 	let llavePrivada: TextAccessPrivateTypes = textAccessPrivate![0].match(
-		/("|\\")accesoPrivado("|\\")(\s?)+:(\s?)+("|\\")[\d\w+=/-≤.]+("|\\")/gm
+		/("|\\")accesoPrivado("|\\")(\s?)+:(\s?)+("|\\")[\d\w+=/-≤.]+("|\\")/
 	);
 
 	llavePrivada = llavePrivada![0].split('"')[3];
-
 	texto.paraDesencriptar = texto.paraDesencriptar.split('\n').join('');
 
 	if (endpoint === 1) {
 		let textoParaDesencriptar =
 			texto.paraDesencriptar.match(
-				/\{(\s?)+("|\\")codigo("|\\")(\s?)+(.+)\}\}/g
+				/\{["\\\s]+codigo["\\\s]+:["\\\s]+.*\}\}/gi
 			) === null
 				? '{}'
 				: texto.paraDesencriptar
-						.match(/\{(\s?)+("|\\")codigo("|\\")(\s?)+(.+)\}\}/g)![0]
+						.match(/\{["\\\s]+codigo["\\\s]+:["\\\s]+.*\}\}/gi)![0]
 						.toString(); // response;
 
 		return {
@@ -43,16 +42,21 @@ export const getPrivateKey = (
 	} else {
 		let textoParaDesencriptar =
 			texto.paraDesencriptar.match(
-				/\{(\s?)+("|\\")urlApi("|\\")(\s?)+(.+)\]\}/g
+				/\{["\\\s]+urlApi["\\\s]+:["\\\s]+.*["\\\s]\}\]\}(\d{4}-)?/gi
 			) === null
 				? '{}'
 				: texto.paraDesencriptar
-						.match(/\{(\s?)+("|\\")urlApi("|\\")(\s?)+(.+)\]\}/g)![0]
+						.match(
+							/\{["\\\s]+urlApi["\\\s]+:["\\\s]+.*["\\\s]\}\]\}(\d{4}-)?/gi
+						)![0]
 						.toString(); // request
 
 		return {
 			llavePrivada,
-			texto: textoParaDesencriptar,
+			texto:
+				textoParaDesencriptar.slice(-5).match(/\d{4}-/gi) === null
+					? textoParaDesencriptar
+					: textoParaDesencriptar.slice(0, -5),
 		};
 	}
 };
