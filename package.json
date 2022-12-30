@@ -2,9 +2,9 @@
 	"name": "cdt-decrypt",
 	"displayName": "CDT Decrypt",
 	"description": "Herramienta para desencriptar las peticiones y respuestas que se pintan en los LOGs del área para guardias",
-	"icon": "assets/CDT.jpg",
+	"icon": "assets/CDT.png",
 	"publisher": "AlanGPmx",
-	"version": "0.0.1",
+	"version": "0.0.5",
 	"author": {
 		"name": "Alan Garduño"
 	},
@@ -58,6 +58,7 @@
 		"webpack-cli": "^5.0.0"
 	},
 	"dependencies": {
+		"axios": "^1.2.2",
 		"crypto": "^1.0.1",
 		"util": "^0.12.5",
 		"vscode-uri": "^3.0.7"
