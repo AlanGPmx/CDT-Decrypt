@@ -30,6 +30,10 @@
 			}
 		]
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/AlanGPmx/CDT-Decrypt.git"
+	},
 	"scripts": {
 		"vscode:prepublish": "npm run package",
 		"compile": "webpack",
